@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>面试时间安排 - 五新重工</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+  <div class="card" id="main-card">
+
+    <!-- 品牌头部 -->
+    <div class="brand-bar">
+      <div class="brand-logo">五</div>
+      <div class="brand-name">五新重工 · 招聘系统</div>
+    </div>
+
+    {% if error %}
+    <!-- ===== 错误页面 ===== -->
+    <div class="error-page">
+      <div class="error-icon">&#9888;</div>
+      <div class="error-title">{{ error_title }}</div>
+      <div class="error-message">{{ error_message }}</div>
+      <a href="{{ url_for('index') }}" class="error-link">返回首页</a>
+    </div>
+
+    {% else %}
+    <!-- ===== 表单页面 ===== -->
+    <div id="form-section">
+      <div class="card-title">面试时间安排</div>
+      <div class="card-subtitle">请选择合适的面试时间并填写补充信息</div>
+
+      <!-- 候选人信息 -->
+      <div class="info-row">
+        <span class="info-label">候选人</span>
+        <span class="info-value">{{ candidate.name }}</span>
+      </div>
+      <div class="info-row">
+        <span class="info-label">应聘岗位</span>
+        <span class="info-value">{{ candidate.job_title }}</span>
+      </div>
+
+      <form id="interview-form">
+        <input type="hidden" id="candidate_id" value="{{ candidate.candidate_id or candidate.id }}">
+
+        <!-- 面试时间 -->
+        <div class="form-group">
+          <label class="form-label">面试时间 <span class="required">*</span></label>
+          <input type="datetime-local" class="form-control" id="selected_time" required
+                 min="{{ min_datetime }}">
+          <div class="form-hint">请选择发送邀请5分钟后的任意时间</div>
+        </div>
+
+        <!-- 手机号 -->
+        <div class="form-group">
+          <label class="form-label">手机号</label>
+          <input type="tel" class="form-control" id="phone" placeholder="请输入手机号，方便联系" maxlength="11">
+        </div>
+
+        <!-- 期望薪资 -->
+        <div class="form-group">
+          <label class="form-label">期望薪资</label>
+          <input type="text" class="form-control" id="expected_salary"
+                 placeholder="例如：15K-20K 或 面议"
+                 value="{{ candidate.expected_salary or '' }}">
+        </div>
+
+        <!-- 备注 -->
+        <div class="form-group">
+          <label class="form-label">备注</label>
+          <textarea class="form-textarea" id="note" placeholder="如有其他需求或问题请在此填写"></textarea>
+        </div>
+
+        <!-- 错误提示 -->
+        <div id="submit-error"></div>
+
+        <!-- 提交按钮 -->
+        <button type="submit" class="btn-submit" id="submit-btn">
+          <span id="btn-text">确认提交</span>
+        </button>
+      </form>
+    </div>
+
+    <!-- ===== 成功页面 ===== -->
+    <div id="success-section" style="display:none;">
+      <div class="success-page">
+        <div class="success-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke="#059669" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="20 6 9 17 4 12"></polyline>
+          </svg>
+        </div>
+        <div class="success-title">面试时间已确认</div>
+        <div class="success-message">您的面试信息已成功提交，请留意邮箱通知。</div>
+        <div class="success-detail">
+          <div class="success-detail-item">
+            <span class="success-detail-label">候选人</span>
+            <span class="success-detail-value" id="success-name">{{ candidate.name }}</span>
+          </div>
+          <div class="success-detail-item">
+            <span class="success-detail-label">应聘岗位</span>
+            <span class="success-detail-value" id="success-job">{{ candidate.job_title }}</span>
+          </div>
+          <div class="success-detail-item">
+            <span class="success-detail-label">面试时间</span>
+            <span class="success-detail-value" id="success-time">-</span>
+          </div>
+          <div class="success-detail-item">
+            <span class="success-detail-label">手机号</span>
+            <span class="success-detail-value" id="success-phone">-</span>
+          </div>
+          <div class="success-detail-item">
+            <span class="success-detail-label">期望薪资</span>
+            <span class="success-detail-value" id="success-salary">-</span>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
+
+    <div class="footer">五新重工集团有限公司 · 智能招聘系统</div>
+  </div>
+
+  {% if not error %}
+  <script>
+    (function() {
+      var form = document.getElementById('interview-form');
+      var submitBtn = document.getElementById('submit-btn');
+      var btnText = document.getElementById('btn-text');
+      var errorDiv = document.getElementById('submit-error');
+      var formSection = document.getElementById('form-section');
+      var successSection = document.getElementById('success-section');
+
+      function showError(msg) {
+        errorDiv.textContent = msg;
+        errorDiv.style.display = 'block';
+      }
+      function hideError() { errorDiv.style.display = 'none'; }
+      function disableForm() {
+        form.querySelectorAll('input, select, textarea, button').forEach(function(el) { el.disabled = true; });
+      }
+      function showSuccess(data) {
+        document.getElementById('success-time').textContent = formatTime(data.selected_time);
+        document.getElementById('success-phone').textContent = data.phone || '未填写';
+        document.getElementById('success-salary').textContent = data.expected_salary || '未填写';
+        formSection.style.display = 'none';
+        successSection.style.display = 'block';
+        successSection.querySelector('.success-page').scrollIntoView({ behavior: 'smooth' });
+      }
+      function formatTime(iso) {
+        if (!iso) return '-';
+        try {
+          var d = new Date(iso);
+          var month = d.getMonth() + 1;
+          var day = d.getDate();
+          var hour = d.getHours().toString().padStart(2, '0');
+          var min = d.getMinutes().toString().padStart(2, '0');
+          return month + '月' + day + '日 ' + hour + ':' + min;
+        } catch(e) { return iso; }
+      }
+      function setLoading(loading) {
+        submitBtn.disabled = loading;
+        btnText.innerHTML = loading
+          ? '<span class="spinner"></span>提交中...'
+          : '确认提交';
+      }
+
+      form.addEventListener('submit', function(e) {
+        e.preventDefault();
+        hideError();
+
+        var candidate_id = document.getElementById('candidate_id').value;
+        var selected_time = document.getElementById('selected_time').value;
+        var phone = document.getElementById('phone').value.trim();
+        var expected_salary = document.getElementById('expected_salary').value.trim();
+        var note = document.getElementById('note').value.trim();
+
+        if (!selected_time) { showError('请选择面试时间'); return; }
+        if (phone && !/^1[3-9]\d{9}$/.test(phone)) { showError('手机号格式不正确'); return; }
+
+        setLoading(true);
+
+        fetch('/submit', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            candidate_id: candidate_id,
+            selected_time: selected_time,
+            phone: phone || null,
+            expected_salary: expected_salary || null,
+            note: note || null
+          })
+        })
+        .then(function(r) { return r.json(); })
+        .then(function(result) {
+          setLoading(false);
+          if (result.success) {
+            disableForm();
+            showSuccess({ selected_time: selected_time, phone: phone, expected_salary: expected_salary });
+          } else {
+            showError(result.error || '提交失败，请稍后重试');
+          }
+        })
+        .catch(function() {
+          setLoading(false);
+          showError('网络错误，请检查网络后重试');
+        });
+      });
+    })();
+  </script>
+  {% endif %}
+
+</body>
+</html>

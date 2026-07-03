@@ -1,0 +1,17 @@
+=== 电气工程师岗位（ID=9）投递记录 ===
+
+ID: 4
+job_id: 9
+name: 汪展鹏
+phone: 18673398995
+email: 1920166300@qq.com
+education: 
+experience: 
+cover_letter: 
+resume_file_id: 4
+status: pending
+created_at: 2026-06-30 01:02:59
+updated_at: 2026-06-30 01:02:59
+resume_file_name: resume_1782781352856_jsxxg7.docx
+resume_original_name: æ±ªå±é¹ç®å1.docx
+------------------------------

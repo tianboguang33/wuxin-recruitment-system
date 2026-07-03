@@ -1,0 +1,594 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>五新重工智能招聘系统 - TRAE AI创造力大赛</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: linear-gradient(135deg, #0f1724 0%, #1a2332 50%, #0d1b2a 100%);
+    color: #e2e8f0;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+  .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+  
+  /* Hero Section */
+  .hero {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    text-align: center;
+    padding: 60px 24px;
+  }
+  .hero-bg {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    background: radial-gradient(ellipse at 30% 50%, rgba(59,130,246,0.15) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 50%, rgba(249,115,22,0.1) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(59,130,246,0.15);
+    border: 1px solid rgba(59,130,246,0.3);
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 14px;
+    color: #60a5fa;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .hero-badge::before {
+    content: '';
+    width: 8px; height: 8px;
+    background: #3b82f6;
+    border-radius: 50%;
+    animation: pulse 2s infinite;
+  }
+  @keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.3; } }
+  
+  .hero h1 {
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 800;
+    background: linear-gradient(135deg, #f59e0b 0%, #f97316 50%, #ef4444 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    margin-bottom: 20px;
+    position: relative;
+  }
+  .hero h1 span {
+    background: linear-gradient(135deg, #60a5fa 0%, #3b82f6 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .hero p {
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    color: #94a3b8;
+    max-width: 700px;
+    margin-bottom: 40px;
+    position: relative;
+  }
+  .hero-stats {
+    display: flex;
+    gap: 48px;
+    position: relative;
+  }
+  .hero-stat { text-align: center; }
+  .hero-stat .num {
+    font-size: 2rem;
+    font-weight: 700;
+    color: #f59e0b;
+  }
+  .hero-stat .label {
+    font-size: 0.875rem;
+    color: #64748b;
+  }
+  .scroll-indicator {
+    position: absolute;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%);
+    animation: bounce 2s infinite;
+    color: #64748b;
+    font-size: 12px;
+  }
+  @keyframes bounce { 0%,100% { transform: translateX(-50%) translateY(0); } 50% { transform: translateX(-50%) translateY(10px); } }
+
+  /* Section common */
+  section { padding: 80px 0; }
+  .section-label {
+    display: inline-block;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 2px;
+    color: #f59e0b;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .section-title {
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 700;
+    margin-bottom: 16px;
+  }
+  .section-desc {
+    color: #94a3b8;
+    max-width: 600px;
+    margin-bottom: 48px;
+  }
+
+  /* Pain Points */
+  .pain-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 24px;
+  }
+  .pain-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+    transition: all 0.3s;
+  }
+  .pain-card:hover {
+    background: rgba(255,255,255,0.06);
+    border-color: rgba(59,130,246,0.3);
+    transform: translateY(-2px);
+  }
+  .pain-card .icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 24px;
+    margin-bottom: 16px;
+  }
+  .pain-card h3 { font-size: 1.125rem; margin-bottom: 8px; }
+  .pain-card p { font-size: 0.875rem; color: #94a3b8; }
+
+  /* Solution Flow */
+  .flow-wrapper {
+    position: relative;
+    padding: 40px 0;
+  }
+  .flow-line {
+    position: absolute;
+    left: 24px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background: linear-gradient(180deg, #3b82f6, #f59e0b, #10b981);
+  }
+  .flow-item {
+    display: flex;
+    gap: 24px;
+    margin-bottom: 32px;
+    position: relative;
+  }
+  .flow-step {
+    width: 50px; height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    font-size: 18px;
+    flex-shrink: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .flow-card {
+    flex: 1;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 24px;
+  }
+  .flow-card h3 { font-size: 1.125rem; margin-bottom: 8px; }
+  .flow-card p { font-size: 0.875rem; color: #94a3b8; }
+  .flow-card .tag {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 100px;
+    margin-top: 8px;
+    background: rgba(59,130,246,0.15);
+    color: #60a5fa;
+    border: 1px solid rgba(59,130,246,0.2);
+  }
+
+  /* Architecture */
+  .arch-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+  }
+  .arch-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 12px;
+    padding: 24px;
+    text-align: center;
+  }
+  .arch-card .layer {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 1px;
+    color: #f59e0b;
+    margin-bottom: 8px;
+  }
+  .arch-card h4 { font-size: 1rem; margin-bottom: 8px; }
+  .arch-card p { font-size: 0.8125rem; color: #94a3b8; }
+
+  /* Tech Stack */
+  .tech-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 24px;
+  }
+  .tech-badge {
+    padding: 8px 20px;
+    border-radius: 100px;
+    font-size: 0.875rem;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    color: #cbd5e1;
+  }
+  .tech-badge.highlight {
+    background: rgba(59,130,246,0.1);
+    border-color: rgba(59,130,246,0.3);
+    color: #60a5fa;
+  }
+
+  /* Value */
+  .value-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 24px;
+  }
+  .value-card {
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.06);
+    border-radius: 16px;
+    padding: 32px;
+  }
+  .value-card .big-icon { font-size: 36px; margin-bottom: 16px; }
+  .value-card h3 { font-size: 1.25rem; margin-bottom: 12px; }
+  .value-card ul { list-style: none; }
+  .value-card li {
+    font-size: 0.875rem;
+    color: #94a3b8;
+    padding: 4px 0;
+    padding-left: 20px;
+    position: relative;
+  }
+  .value-card li::before {
+    content: '›';
+    position: absolute;
+    left: 4px;
+    color: #f59e0b;
+    font-weight: bold;
+  }
+
+  /* Demo Section */
+  .demo-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 16px;
+    margin-top: 32px;
+  }
+  .demo-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 14px 32px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s;
+  }
+  .demo-btn.primary {
+    background: linear-gradient(135deg, #f59e0b, #f97316);
+    color: #fff;
+  }
+  .demo-btn.primary:hover { transform: translateY(-2px); box-shadow: 0 8px 24px rgba(249,115,22,0.3); }
+  .demo-btn.secondary {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.1);
+    color: #e2e8f0;
+  }
+  .demo-btn.secondary:hover { background: rgba(255,255,255,0.1); }
+
+  /* Footer */
+  footer {
+    text-align: center;
+    padding: 40px 24px;
+    color: #64748b;
+    font-size: 0.8125rem;
+    border-top: 1px solid rgba(255,255,255,0.05);
+  }
+
+  /* Responsive */
+  @media (max-width: 768px) {
+    .hero-stats { flex-direction: column; gap: 24px; }
+    .flow-item { flex-direction: column; }
+    .flow-line { left: 25px; }
+  }
+</style>
+</head>
+<body>
+
+<!-- Hero -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-badge">🏆 TRAE AI 创造力大赛 · 学习工作赛道</div>
+  <h1>五新重工<br><span>智能招聘系统</span></h1>
+  <p>基于 TRAE IDE 全流程开发的企业级 AI 招聘自动化平台，覆盖从岗位发布、简历筛选、AI面试到综合评估的完整招聘链路</p>
+  <div class="hero-stats">
+    <div class="hero-stat"><div class="num">13</div><div class="label">招聘状态节点</div></div>
+    <div class="hero-stat"><div class="num">10+</div><div class="label">AI Agents 协作</div></div>
+    <div class="hero-stat"><div class="num">4</div><div class="label">已发布岗位</div></div>
+    <div class="hero-stat"><div class="num">5</div><div class="label">候选人进入流程</div></div>
+  </div>
+  <div class="scroll-indicator">↓ 向下滚动</div>
+</section>
+
+<!-- Pain Points -->
+<section>
+  <div class="container">
+    <div class="section-label">· 痛点分析</div>
+    <h2 class="section-title">传统招聘的四大困境</h2>
+    <p class="section-desc">制造业企业招聘流程复杂、环节多，传统方式面临效率低下、体验割裂等突出问题</p>
+    <div class="pain-grid">
+      <div class="pain-card">
+        <div class="icon" style="background:rgba(239,68,68,0.15)">⏱️</div>
+        <h3>流程冗长耗时</h3>
+        <p>从JD编写、渠道发布、简历筛选、面试安排到录用通知，全流程人工操作，一个岗位平均耗时2-3周</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon" style="background:rgba(249,115,22,0.15)">📊</div>
+        <h3>筛选效率低下</h3>
+        <p>HR每天浏览数百份简历，人工匹配度判断标准不统一，优质候选人容易被遗漏</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon" style="background:rgba(59,130,246,0.15)">🤖</div>
+        <h3>面试资源瓶颈</h3>
+        <p>大规模招聘时，面试官时间有限，候选人等待周期长，面试标准难以一致</p>
+      </div>
+      <div class="pain-card">
+        <div class="icon" style="background:rgba(16,185,129,0.15)">🔗</div>
+        <h3>信息孤岛严重</h3>
+        <p>JD发布、简历收集、面试安排、评估记录分散在不同系统，数据无法打通</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Solution -->
+<section style="background:rgba(255,255,255,0.02);">
+  <div class="container">
+    <div class="section-label">· 解决方案</div>
+    <h2 class="section-title">AI Agent 驱动的全流程自动化</h2>
+    <p class="section-desc">将招聘拆解为7个标准步骤，每个步骤由专属AI Agent负责，用户只需确认即可推进</p>
+    
+    <div class="flow-wrapper">
+      <div class="flow-line"></div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#3b82f6,#2563eb);color:#fff;">1</div>
+        <div class="flow-card">
+          <h3>📄 JD 智能生成与发布</h3>
+          <p>输入岗位名称和关键要求，AI自动生成完整的岗位描述和任职要求，一键发布到招聘网站</p>
+          <span class="tag">JD Generator Agent</span>
+          <span class="tag" style="background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2);">JD Publisher Agent</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#f59e0b,#d97706);color:#fff;">2</div>
+        <div class="flow-card">
+          <h3>📥 简历智能采集与去重</h3>
+          <p>自动从后台获取新增投递，只处理待审核简历，筛选后自动标记状态避免重复处理，淘汰简历可批量清理</p>
+          <span class="tag">Resume Collector Agent</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#8b5cf6,#7c3aed);color:#fff;">3</div>
+        <div class="flow-card">
+          <h3>🔍 AI 简历匹配筛选</h3>
+          <p>解析简历内容，与岗位JD进行多维度匹配度分析（技能匹配、经验匹配、学历匹配），输出匹配分数和亮点分析</p>
+          <span class="tag">Resume Parser Agent</span>
+          <span class="tag" style="background:rgba(16,185,129,0.15);color:#34d399;border-color:rgba(16,185,129,0.2);">Match Evaluator</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#ec4899,#db2777);color:#fff;">4</div>
+        <div class="flow-card">
+          <h3>📧 面试邀请与时间确认</h3>
+          <p>初筛通过后自动发送面试邀请邮件，候选人通过链接自助选择面试时段，系统自动确认</p>
+          <span class="tag">HR Boot Agent</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#f97316,#ea580c);color:#fff;">5</div>
+        <div class="flow-card">
+          <h3>🤖 AI 数字人面试</h3>
+          <p>创建AI面试房间，支持数字人虚拟面试官，按预设题库自动提问，实时评估候选人回答</p>
+          <span class="tag">Interviewer Agent</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#10b981,#059669);color:#fff;">6</div>
+        <div class="flow-card">
+          <h3>📊 综合评估与报告</h3>
+          <p>简历匹配评分（30%）+ 面试评分（70%）加权计算，生成优劣势分析、风险提示和录用建议</p>
+          <span class="tag">Evaluator Agent</span>
+        </div>
+      </div>
+
+      <div class="flow-item">
+        <div class="flow-step" style="background:linear-gradient(135deg,#6366f1,#4f46e5);color:#fff;">7</div>
+        <div class="flow-card">
+          <h3>📬 智能通知发送</h3>
+          <p>通过/待定/不通过三类结果分别发送个性化通知邮件，通知HR负责人汇总结果</p>
+          <span class="tag">Notifier Agent</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Architecture -->
+<section>
+  <div class="container">
+    <div class="section-label">· 技术架构</div>
+    <h2 class="section-title">分层可扩展的系统设计</h2>
+    <p class="section-desc">前端 + 后端 + Agent 三层架构，通过 MCP 协议实现AI与业务系统的标准化通信</p>
+    
+    <div class="arch-grid">
+      <div class="arch-card">
+        <div class="layer">PRESENTATION</div>
+        <h4>🖥️ 前端层</h4>
+        <p>React 18 + TypeScript + Vite<br>Tailwind CSS 响应式设计<br>候选人端 + 管理后台双端</p>
+      </div>
+      <div class="arch-card">
+        <div class="layer">API</div>
+        <h4>🌐 服务层</h4>
+        <p>Express REST API<br>状态机驱动业务流转<br>SQLite 嵌入式数据库</p>
+      </div>
+      <div class="arch-card">
+        <div class="layer">AGENT</div>
+        <h4>🧠 AI Agent 层</h4>
+        <p>MCP 协议标准化通信<br>10+ 专业Agent协作<br>deepSeek / 火山引擎AI</p>
+      </div>
+      <div class="arch-card">
+        <div class="layer">INTEGRATION</div>
+        <h4>🔌 集成层</h4>
+        <p>飞书文档 API<br>邮件通知服务<br>数字人面试系统</p>
+      </div>
+    </div>
+
+    <div class="tech-grid">
+      <span class="tech-badge highlight">React 18</span>
+      <span class="tech-badge highlight">TypeScript</span>
+      <span class="tech-badge highlight">Vite</span>
+      <span class="tech-badge highlight">Tailwind CSS</span>
+      <span class="tech-badge highlight">Express</span>
+      <span class="tech-badge highlight">SQLite</span>
+      <span class="tech-badge">Zustand</span>
+      <span class="tech-badge">Lucide Icons</span>
+      <span class="tech-badge">MCP SDK</span>
+      <span class="tech-badge">DeepSeek API</span>
+      <span class="tech-badge">RESTful API</span>
+    </div>
+  </div>
+</section>
+
+<!-- Key Features -->
+<section style="background:rgba(255,255,255,0.02);">
+  <div class="container">
+    <div class="section-label">· 核心亮点</div>
+    <h2 class="section-title">四大创新设计</h2>
+    <p class="section-desc">让招聘从"人工驱动"转变为"AI驱动"，人只做关键决策</p>
+    
+    <div class="value-grid">
+      <div class="value-card">
+        <div class="big-icon">⚙️</div>
+        <h3>状态机驱动流程</h3>
+        <p style="color:#94a3b8;font-size:0.875rem;margin-bottom:12px;">13个状态节点 + 13个转换事件，精确控制招聘流程的每一步</p>
+        <ul>
+          <li>每个状态有明确的进入条件和操作</li>
+          <li>支持自动转换和手动干预</li>
+          <li>完整的状态变更历史记录</li>
+          <li>可扩展的守卫条件和钩子系统</li>
+        </ul>
+      </div>
+      <div class="value-card">
+        <div class="big-icon">🤖</div>
+        <h3>多Agent协作体系</h3>
+        <p style="color:#94a3b8;font-size:0.875rem;margin-bottom:12px;">每个招聘环节由专业Agent负责，职责清晰、协作有序</p>
+        <ul>
+          <li>JD生成器 → JD发布器 → 简历采集器</li>
+          <li>简历解析器 → 面试官Agent → 评估器</li>
+          <li>支持实时流式状态反馈</li>
+          <li>用户仅需确认关键决策点</li>
+        </ul>
+      </div>
+      <div class="value-card">
+        <div class="big-icon">🔌</div>
+        <h3>MCP 标准化协议</h3>
+        <p style="color:#94a3b8;font-size:0.875rem;margin-bottom:12px;">通过 Model Context Protocol 实现AI与系统的标准化互通</p>
+        <ul>
+          <li>10+ 标准MCP工具接口</li>
+          <li>AI可调用：发布岗位、分析简历、创建面试</li>
+          <li>资源统一管理（岗位、候选人数据）</li>
+          <li>天然支持Agent与工具的解耦</li>
+        </ul>
+      </div>
+      <div class="value-card">
+        <div class="big-icon">🔄</div>
+        <h3>全自动面试管道</h3>
+        <p style="color:#94a3b8;font-size:0.875rem;margin-bottom:12px;">从邀请发送到结果获取，面试流程全自动完成</p>
+        <ul>
+          <li>筛选通过 → 自动发送邀请邮件</li>
+          <li>候选人选择时间 → 自动创建面试房间</li>
+          <li>面试前5分钟 → 自动启动面试</li>
+          <li>面试完成 → 自动获取评分与评估</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Demo -->
+<section>
+  <div class="container" style="text-align:center;">
+    <div class="section-label">· 在线体验</div>
+    <h2 class="section-title">立即体验完整功能</h2>
+    <p class="section-desc" style="margin:0 auto 32px;">系统已在生产环境运行，支持完整的招聘全流程演示</p>
+    
+    <div class="demo-links" style="justify-content:center;">
+      <a href="http://localhost:3001/" target="_blank" class="demo-btn primary">
+        🏠 招聘首页
+      </a>
+      <a href="http://localhost:3001/admin/login" target="_blank" class="demo-btn secondary">
+        🔐 管理后台（admin / admin123）
+      </a>
+      <a href="https://forum.trae.cn" target="_blank" class="demo-btn secondary">
+        💬 TRAE社区报名
+      </a>
+    </div>
+    
+    <div style="margin-top:40px;padding:24px;background:rgba(255,255,255,0.03);border-radius:12px;border:1px solid rgba(255,255,255,0.06);">
+      <p style="color:#94a3b8;font-size:0.875rem;">
+        ⚡ 本项目使用 TRAE IDE 全流程开发，从前端页面、后端API、数据库设计到AI Agent集成，<br>
+        全部通过 TRAE 的 AI 辅助编程能力完成，充分展示了 AI + 人工协作的开发效率。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Footer -->
+<footer>
+  <p>五新重工智能招聘系统 · TRAE AI 创造力大赛参赛作品 · 学习工作赛道</p>
+  <p style="margin-top:8px;">基于 TRAE IDE 开发 · 2026</p>
+</footer>
+
+</body>
+</html>

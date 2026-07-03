@@ -1,0 +1,9 @@
+{
+  "buildCommand": "echo 'skip build'",
+  "outputDirectory": "dist",
+  "functions": {},
+  "routes": [
+    { "src": "/TRAE_Competition_Proposal.html", "dest": "/TRAE_Competition_Proposal.html" },
+    { "src": "/(.*)", "dest": "/index.html" }
+  ]
+}

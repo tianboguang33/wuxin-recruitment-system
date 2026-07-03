@@ -1,0 +1,8 @@
+简历文件ID=3:
+id: 3
+application_id: None
+original_name: 6_å¼ å®¶ä¼ç®åï¼1ï¼_20250805135022.pdf
+file_name: resume_1782741882792_s26u4c.pdf
+file_size: 247036
+mime_type: application/pdf
+created_at: 2026-06-29 14:04:42

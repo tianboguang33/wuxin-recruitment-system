@@ -1,0 +1,26 @@
+- [ ] Checkpoint 1: 钩子类型定义完整（Hook, HookType, HookConfig）
+- [ ] Checkpoint 2: 状态机配置支持hooks字段
+- [ ] Checkpoint 3: StateMachine类正确触发生命周期钩子
+- [ ] Checkpoint 4: HookManager服务支持钩子注册、注销、执行
+- [ ] Checkpoint 5: 条件钩子根据条件正确执行或跳过
+- [ ] Checkpoint 6: 自动初筛钩子正确调用简历评估工具
+- [ ] Checkpoint 7: 自动初筛根据评分阈值正确决定pass/reject
+- [ ] Checkpoint 8: 新增interview_pending状态通过TypeScript编译检查
+- [ ] Checkpoint 9: 状态转换规则正确：screened→interview_pending→interviewing
+- [ ] Checkpoint 10: 自动安排面试钩子正确调用prepare_interview
+- [ ] Checkpoint 11: 面试邀请邮件正确发送
+- [ ] Checkpoint 12: 邮件通知钩子支持多种邮件模板
+- [ ] Checkpoint 13: 面试邀请超时检查定时任务正确执行（每小时）
+- [ ] Checkpoint 14: 24小时后正确发送提醒邮件
+- [ ] Checkpoint 15: 48小时后正确转换为interview_failed
+- [ ] Checkpoint 16: 简历采集监控定时任务正确执行（每6小时）
+- [ ] Checkpoint 17: 超过24小时无新简历时发送告警
+- [ ] Checkpoint 18: MCP调用失败时自动重试最多3次
+- [ ] Checkpoint 19: 钩子执行失败不影响状态转换
+- [ ] Checkpoint 20: 完整自动流程（pending→screening→screened→interview_pending→interviewing→interview_passed→offer_sent→accepted）测试通过
+- [ ] Checkpoint 21: 初筛失败流程测试通过
+- [ ] Checkpoint 22: 面试超时流程测试通过
+- [ ] Checkpoint 23: 面试失败流程测试通过
+- [ ] Checkpoint 24: 钩子异常不影响流程
+- [ ] Checkpoint 25: TypeScript编译检查通过
+- [ ] Checkpoint 26: 钩子执行日志完整可追溯

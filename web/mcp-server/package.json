@@ -1,0 +1,24 @@
+{
+  "name": "wuxin-mcp-server",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "五新重工招聘 MCP Server - 岗位描述生成 & 简历匹配分析",
+  "main": "dist/server.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "dev": "tsx watch server.ts",
+    "serve": "npx @modelcontextprotocol/inspector node dist/server.js",
+    "check": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.9.0",
+    "sql.js": "^1.11.0"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.30",
+    "tsx": "^4.20.3",
+    "typescript": "~5.8.3"
+  }
+}

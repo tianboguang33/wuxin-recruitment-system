@@ -1,7 +1,8 @@
 {
-  "name": "trae-agent",
+  "name": "wuxin-recruitment-system",
+  "description": "AI-powered recruitment system for Wuxin Heavy Industry - featuring 9 autonomous agents, state machine engine, MCP services, and React frontend",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
   "scripts": {
     "client:dev": "vite",
